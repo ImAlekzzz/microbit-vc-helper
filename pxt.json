@@ -1,7 +1,7 @@
 {
-    "name": "microbit-pxt-blehid - Copy",
+    "name": "microbit-vc-control",
     "version": "0.1.0",
-    "description": "BLE HID Support",
+    "description": "Make your microbit control your voice chat software",
     "license": "MIT",
     "dependencies": {
         "core": "*",
@@ -39,7 +39,10 @@
         "gamepad.cpp",
         "GamepadReporter.cpp",
         "GamepadReporter.h",
-        "main.ts"
+        "main.ts",
+        "StatusService.cpp",
+        "StatusService.h",
+        "status.ts"
     ],
     "testFiles": [
         "test.ts"
