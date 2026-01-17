@@ -20,16 +20,11 @@ namespace customStatus {
         basic.showString("SUB");
     }
 
-    /**
-     * Event when status changes
-     * @param status 1 = on/unmuted, 0 = off/muted
-     */
-    //% block="on status changed to $status"
-    //% status.shadow="numberPicker"
-    //% status.min=0 status.max=1
-    export function onStatusChanged(status: number, handler: Action): void {
-        control.onEvent(2001, status, handler);
-    }
+//% block="on status changed to $status"
+//% status.min=0 status.max=1
+export function onStatusChanged(status: number, handler: Action): void {
+    control.onEvent(2001, status, handler);
+}
 
     /**
      * Get the last received status
