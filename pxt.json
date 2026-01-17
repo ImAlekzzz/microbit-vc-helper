@@ -40,9 +40,8 @@
         "GamepadReporter.cpp",
         "GamepadReporter.h",
         "main.ts",
-        "StatusService.cpp",
-        "StatusService.h",
         "status.ts"
+        
     ],
     "testFiles": [
         "test.ts"

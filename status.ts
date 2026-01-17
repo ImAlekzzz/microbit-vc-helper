@@ -1,57 +1,59 @@
 /**
- * Custom Status Service namespace
+ * Custom status control for mic/camera feedback
  */
 namespace customStatus {
 
-    let lastStatus: number = 0;
+    let lastStatus: number = 0;  // ← this MUST be here, inside the namespace
 
     /**
      * Initialize the status service (call this once at start)
      */
-    //% block="init custom status service"
+    //% block="init status service"
+    //% blockId=customstatus_init
+    //% blockGap=8
     export function init(): void {
-        // Force the C++ service to be created
-        // If we have StatusService::getInstance(), call it here (add later)
         basic.showString("INIT")
     }
 
     /**
-     * Subscribe to status notifications (enable notify from PC)
+     * Subscribe to status notifications from PC
      */
     //% block="subscribe to status updates"
+    //% blockId=customstatus_subscribe
+    //% blockGap=8
     export function subscribe(): void {
-        // This will call C++ to enable notifications on the characteristic
-        // We'll add the C++ function later
         basic.showString("SUB")
     }
 
     /**
-     * Event when mic/camera status changes
-     * @param status 1 = on/unmuted, 0 = off/muted
+     * Event when status changes (1 = unmuted/on, 0 = muted/off)
+     * @param status 
      */
     //% block="on status changed to $status"
-    //% status.shadow="numberPicker"
-    //% status.min=0 status.max=1
+    //% blockId=customstatus_onchanged
+    //% status.shadow=numberPicker status.min=0 status.max=1
     export function onStatusChanged(status: number, handler: () => void) {
-        control.onEvent(2001, status, handler);  // custom event ID 2001
+        control.onEvent(2001, status, handler);
     }
 
     /**
-     * Get current status
+     * Get last received status
      */
     //% block="current status"
+    //% blockId=customstatus_current
+    //% blockGap=8
     export function currentStatus(): number {
-        return lastStatus;
+        return lastStatus;  // ← uses the variable declared above
     }
 
-    // Internal: called from C++ when notification arrives
-    export function _onNotification(value: number) {
+    // Internal function - called from C++ when a notification arrives
+    export function _notifyReceived(value: number) {
         lastStatus = value;
         control.raiseEvent(2001, value);
-        if (value == 1) {
-            basic.showIcon(IconNames.Yes);  // mic on
+        if (value === 1) {
+            basic.showIcon(IconNames.Yes);  // mic/camera on
         } else {
-            basic.clearScreen();  // muted
+            basic.clearScreen();            // muted/off
         }
     }
 }

@@ -11,13 +11,12 @@ class StatusService {
 public:
     StatusService();
 
-    BLEService* getService();
+    static StatusService *getInstance();
 
-    // Characteristic for status (notify)
-    BLECharacteristic* statusChar;
+    static uint8_t statusValue;
 
 private:
-    BLEService* service;
+    static StatusService *instance;
 };
 
 #endif
