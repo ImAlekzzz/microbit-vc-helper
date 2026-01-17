@@ -1,59 +1,52 @@
-/**
- * Custom status control for mic/camera feedback
- */
+// status.ts - Custom status blocks for mic/camera feedback
+
 namespace customStatus {
 
-    let lastStatus: number = 0;  // ← this MUST be here, inside the namespace
+    let lastStatus: number = 0;
 
     /**
-     * Initialize the status service (call this once at start)
+     * Initialize the status service
      */
     //% block="init status service"
-    //% blockId=customstatus_init
-    //% blockGap=8
     export function init(): void {
-        basic.showString("INIT")
+        basic.showString("INIT");
     }
 
     /**
-     * Subscribe to status notifications from PC
+     * Subscribe to status updates from PC
      */
     //% block="subscribe to status updates"
-    //% blockId=customstatus_subscribe
-    //% blockGap=8
     export function subscribe(): void {
-        basic.showString("SUB")
+        basic.showString("SUB");
     }
 
     /**
-     * Event when status changes (1 = unmuted/on, 0 = muted/off)
-     * @param status 
+     * Event when status changes
+     * @param status 1 = on/unmuted, 0 = off/muted
      */
     //% block="on status changed to $status"
-    //% blockId=customstatus_onchanged
-    //% status.shadow=numberPicker status.min=0 status.max=1
-    export function onStatusChanged(status: number, handler: () => void) {
+    //% status.shadow="numberPicker"
+    //% status.min=0 status.max=1
+    export function onStatusChanged(status: number, handler: Action): void {
         control.onEvent(2001, status, handler);
     }
 
     /**
-     * Get last received status
+     * Get the last received status
      */
     //% block="current status"
-    //% blockId=customstatus_current
-    //% blockGap=8
     export function currentStatus(): number {
-        return lastStatus;  // ← uses the variable declared above
+        return lastStatus;
     }
 
-    // Internal function - called from C++ when a notification arrives
-    export function _notifyReceived(value: number) {
+    // Internal - called from C++ when notification received
+    export function _notifyReceived(value: number): void {
         lastStatus = value;
         control.raiseEvent(2001, value);
-        if (value === 1) {
-            basic.showIcon(IconNames.Yes);  // mic/camera on
+        if (value == 1) {
+            basic.showIcon(IconNames.Yes);
         } else {
-            basic.clearScreen();            // muted/off
+            basic.clearScreen();
         }
     }
 }
