@@ -22,6 +22,7 @@ namespace customStatus {
 
 //% block="on status changed to $status"
 //% status.min=0 status.max=1
+//% status.shadow="numberPicker"
 export function onStatusChanged(status: number, handler: Action): void {
     control.onEvent(2001, status, handler);
 }
